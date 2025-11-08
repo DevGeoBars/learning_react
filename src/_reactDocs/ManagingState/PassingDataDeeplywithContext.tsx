@@ -57,6 +57,7 @@ export const Heading: FC<HeadingProps> = ({children}) => {
 
   if (isSelected) {
     console.log(heading?.currentHeader);
+    //todo заненсти classNames и реализовать через стили выделение выбранного header
   }
 
   const header = useMemo(() => {
