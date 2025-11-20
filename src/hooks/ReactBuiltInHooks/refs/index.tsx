@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FC } from 'react';
+import { useEffect, useRef, useState, type FC, useCallback } from 'react';
 import { UseImperativeHandle } from "@/hooks/ReactBuiltInHooks/refs/UseImperativeHandle";
 import { Button } from "primereact/button";
 
@@ -47,12 +47,13 @@ export const SimpleUseRef: FC<TSimpleUseRefProps> = ({}) => {
 
 export const Stopwatch: FC<{}> = () => {
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [paused, setPaused] = useState(false);
   const [now, setNow] = useState<number | null>(null);
   const intervalIdRef = useRef<number | null>(null);
 
   let secondPassed = 0;
 
-  const handleStart = () => {
+  const handleStart = useCallback(() => {
     setStartTime(Date.now());
     setNow(Date.now());
     intervalIdRef.current && clearInterval(intervalIdRef.current);
@@ -60,12 +61,26 @@ export const Stopwatch: FC<{}> = () => {
       setNow(Date.now());
     }, 10);
 
-  };
+  }, [paused]);
+
+  const handlePause = () => {
+    if(!paused) {
+      intervalIdRef.current && clearInterval(intervalIdRef.current)
+      setPaused(true)
+    } else {
+      intervalIdRef.current && clearInterval(intervalIdRef.current)
+      intervalIdRef.current = window.setInterval(() => {
+        setNow(Date.now());
+      }, 10);
+    }
+
+  }
 
   const handleStop = () => {
     intervalIdRef.current && clearInterval(intervalIdRef.current);
+
     intervalIdRef.current = null;
-  }
+  };
 
   if (now && startTime) {
     secondPassed = (now - startTime) / 1000;
@@ -75,6 +90,7 @@ export const Stopwatch: FC<{}> = () => {
   return <>
     <h1>Time passed: {secondPassed.toFixed(3)}</h1>
     <Button onClick={handleStart}> start</Button>
+    <Button onClick={handlePause}> pause </Button>
     <Button onClick={handleStop}> stop</Button>
   </>
 }
