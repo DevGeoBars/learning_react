@@ -1,6 +1,8 @@
 import {useEffect, useState} from "react";
+import {s} from "vitest/dist/reporters-w_64AS5f";
 
-export const ConnectingToAnExternalSystem  = ({roomId}: {roomId: number}) => {
+// Usage Connecting to an external system
+export const ChatRoom  = ({roomId}: {roomId: string}) => {
     const [serverUrl, setServerUrl] = useState('https://localhost:1234');
 
     useEffect(() => {
@@ -11,11 +13,16 @@ export const ConnectingToAnExternalSystem  = ({roomId}: {roomId: number}) => {
     }, [serverUrl, roomId]);
 
     return <>
-        Chat № {roomId}
-        <button onClick={() => {
-            setServerUrl('https://localhost:1235');
-        }}>Поменять сервер</button>
+        <label>
+            Server URL:{' '}
+            <input
+              value={serverUrl}
+              onChange={e => setServerUrl(e.target.value)}
+            />
+        </label>
+        <h1>Welcome to the {roomId} room!</h1>
     </>
+
 };
 
 
@@ -29,14 +36,14 @@ export const ConnectingToAnExternalSystem  = ({roomId}: {roomId: number}) => {
 
 
 
-const createConnection = (id: number, setServerUrl: string) => {
+const createConnection = (roomId: string, serverUrl: string) => {
     return {
-        id,
+
         connect() {
-            console.log(`Chat ${this.id} connected on ${setServerUrl}`);
+            console.log(`Chat ${roomId} connected on ${serverUrl}`);
         },
         disconnect() {
-            console.log(`Chat ${this.id} disconnected on ${setServerUrl}`);
+            console.log(`Chat ${roomId} disconnected on ${serverUrl}`);
         }
     }
 }

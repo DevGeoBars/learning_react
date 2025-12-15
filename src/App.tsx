@@ -25,6 +25,8 @@ function App() {
   const [count, setCount] = useState<number>(0);
   const [text, setText] = useState<string>('');
   const [objectValue, setObjectValue] = useState<{name: string}>({name: 'As'});
+  const [roomId, setRoomId] = useState('general');
+  const [show, setShow] = useState(false);
 
   // useEffectWithDepsChangeCheck((changes: any) => {
   //   console.log(changes)
@@ -40,7 +42,22 @@ function App() {
         console.log('demoRef', demoRef);
       }}>log data</button>
 
-      <WebDevSimplified2 />
+      <label>
+        Choose the chat room:{' '}
+        <select
+          value={roomId}
+          onChange={e => setRoomId(e.target.value)}
+        >
+          <option value="general">general</option>
+          <option value="travel">travel</option>
+          <option value="music">music</option>
+        </select>
+      </label>
+      <button onClick={() => setShow(!show)}>
+        {show ? 'Close chat' : 'Open chat'}
+      </button>
+      {show && <hr />}
+      {show && <ChatRoom roomId={roomId} />}
     </div>
   );
 }
