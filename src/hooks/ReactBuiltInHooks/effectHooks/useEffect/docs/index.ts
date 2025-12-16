@@ -1,0 +1,1 @@
+export * from '@/hooks/ReactBuiltInHooks/effectHooks/useEffect/docs/ConnectingToAnExternalSystem'
