@@ -1,2 +1,2 @@
-export * from './useEffect/docs'
+export * from './useEffect/usage'
 export * from './useEffect/webDevSimplified'
