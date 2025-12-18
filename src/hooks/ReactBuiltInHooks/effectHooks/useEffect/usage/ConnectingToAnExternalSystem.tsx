@@ -60,19 +60,25 @@ export const CheckMousePosition: FC<{  }> = () => {
 };
 
 //Triggering an animation
-export const Welcome: FC = () => {
+export const Welcome: FC<{show: boolean}> = ({show}) => {
   const ref = useRef<HTMLHeadingElement>(null);
+  const animationRef = useRef<FadeInAnimation | null>(null);
 
   useEffect(() => {
     if (!ref.current) return;
 
-    const animation = new FadeInAnimation(ref.current);
-    animation.start(1000);
-
-    return () => {
-      animation.stop();
-    };
+    animationRef.current = new FadeInAnimation(ref.current);
   }, []);
+
+  useEffect(() => {
+    if (!animationRef.current) return;
+
+    if (show) {
+      animationRef.current.start(1000);
+    } else {
+      animationRef.current.stop();
+    }
+  }, [show]);
 
   return (
     <h1
@@ -91,7 +97,6 @@ export const Welcome: FC = () => {
   );
 };
 
-
 //#region helpers
 
 const createConnection = (roomId: string, serverUrl: string) => {
@@ -105,27 +110,51 @@ const createConnection = (roomId: string, serverUrl: string) => {
   }
 }
 
-
 export class FadeInAnimation {
   private node: HTMLElement;
   private duration: number = 0;
   private startTime: number | null = null;
   private frameId: number | null = null;
+  private isFadingOut: boolean = false;
+  private initialOpacity: number = 0;
 
   constructor(node: HTMLElement) {
     this.node = node;
+    this.initialOpacity = parseFloat(node.style.opacity) || 0;
   }
 
   start(duration: number): void {
+    this.resetAnimation();
     this.duration = duration;
+    this.isFadingOut = false;
+    this.initialOpacity = parseFloat(this.node.style.opacity) || 0;
 
     if (this.duration === 0) {
       this.onProgress(1);
     } else {
-      this.onProgress(0);
+      this.onProgress(this.initialOpacity);
       this.startTime = performance.now();
       this.frameId = requestAnimationFrame(() => this.onFrame());
     }
+  }
+
+  stop(): void {
+    this.isFadingOut = true;
+    this.initialOpacity = parseFloat(this.node.style.opacity) || 1;
+    this.duration = 300; // 300ms для исчезновения
+    this.startTime = performance.now();
+
+    if (this.frameId === null) {
+      this.frameId = requestAnimationFrame(() => this.onFrame());
+    }
+  }
+
+  private resetAnimation(): void {
+    if (this.frameId !== null) {
+      cancelAnimationFrame(this.frameId);
+    }
+    this.frameId = null;
+    this.startTime = null;
   }
 
   private onFrame(): void {
@@ -133,25 +162,25 @@ export class FadeInAnimation {
 
     const timePassed = performance.now() - this.startTime;
     const progress = Math.min(timePassed / this.duration, 1);
-    this.onProgress(progress);
+
+    let opacity: number;
+    if (this.isFadingOut) {
+      opacity = this.initialOpacity * (1 - progress); // Исчезновение от текущей прозрачности
+    } else {
+      opacity = this.initialOpacity + (1 - this.initialOpacity) * progress; // Появление от текущей прозрачности
+    }
+
+    this.onProgress(opacity);
 
     if (progress < 1) {
       this.frameId = requestAnimationFrame(() => this.onFrame());
+    } else {
+      this.resetAnimation();
     }
   }
 
   private onProgress(progress: number): void {
-    this.node.style.opacity = progress.toString();
-  }
-
-  stop(): void {
-    if (this.frameId !== null) {
-      cancelAnimationFrame(this.frameId);
-    }
-
-    this.startTime = null;
-    this.frameId = null;
-    this.duration = 0;
+    this.node.style.opacity = Math.max(0, Math.min(1, progress)).toString();
   }
 }
 //endregion

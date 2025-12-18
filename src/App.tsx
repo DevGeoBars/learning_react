@@ -56,7 +56,7 @@ function App() {
       <button onClick={() => setShow(!show)}>
         {show ? 'Close chat' : 'Open chat'}
       </button>
-      <>{ show && <Welcome/> }</>
+      <><Welcome show={show}/></>
     </div>
   );
 }
