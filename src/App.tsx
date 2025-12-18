@@ -13,7 +13,7 @@ import {
   AvoidingRecreatingTheRefContents,
   ChatRoom,
   WebDevSimplified1,
-  WebDevSimplified2, CheckMousePosition
+  WebDevSimplified2, CheckMousePosition, Welcome
 } from "@/hooks";
 
 import "primereact/resources/themes/lara-light-cyan/theme.css";
@@ -56,7 +56,7 @@ function App() {
       <button onClick={() => setShow(!show)}>
         {show ? 'Close chat' : 'Open chat'}
       </button>
-      <CheckMousePosition />
+      <>{ show && <Welcome/> }</>
     </div>
   );
 }

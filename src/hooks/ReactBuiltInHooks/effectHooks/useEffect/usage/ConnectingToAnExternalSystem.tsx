@@ -1,4 +1,5 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, FC, useRef, } from "react";
+
 import {s} from "vitest/dist/reporters-w_64AS5f";
 
 // Usage Connecting to an external system
@@ -27,7 +28,7 @@ export const ChatRoom  = ({roomId}: {roomId: string}) => {
 
 
 //Listening to a global browser event
-export const CheckMousePosition: FC<AppProps> = () => {
+export const CheckMousePosition: FC<{  }> = () => {
     const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
     useEffect(() => {
@@ -58,19 +59,108 @@ export const CheckMousePosition: FC<AppProps> = () => {
     );
 };
 
+//Triggering an animation
+export const Welcome: FC = () => {
+  const ref = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    const animation = new FadeInAnimation(ref.current);
+    animation.start(1000);
+
+    return () => {
+      animation.stop();
+    };
+  }, []);
+
+  return (
+    <h1
+      ref={ref}
+      style={{
+        opacity: 0,
+        color: 'white',
+        padding: 50,
+        textAlign: 'center',
+        fontSize: 50,
+        backgroundImage: 'radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)'
+      }}
+    >
+      Welcome
+    </h1>
+  );
+};
 
 
-
-
+//#region helpers
 
 const createConnection = (roomId: string, serverUrl: string) => {
-    return {
-
-        connect() {
-            console.log(`Chat ${roomId} connected on ${serverUrl}`);
-        },
-        disconnect() {
-            console.log(`Chat ${roomId} disconnected on ${serverUrl}`);
-        }
+  return {
+    connect() {
+      console.log(`Chat ${roomId} connected on ${serverUrl}`);
+    },
+    disconnect() {
+      console.log(`Chat ${roomId} disconnected on ${serverUrl}`);
     }
+  }
 }
+
+
+export class FadeInAnimation {
+  private node: HTMLElement;
+  private duration: number = 0;
+  private startTime: number | null = null;
+  private frameId: number | null = null;
+
+  constructor(node: HTMLElement) {
+    this.node = node;
+  }
+
+  start(duration: number): void {
+    this.duration = duration;
+
+    if (this.duration === 0) {
+      this.onProgress(1);
+    } else {
+      this.onProgress(0);
+      this.startTime = performance.now();
+      this.frameId = requestAnimationFrame(() => this.onFrame());
+    }
+  }
+
+  private onFrame(): void {
+    if (this.startTime === null) return;
+
+    const timePassed = performance.now() - this.startTime;
+    const progress = Math.min(timePassed / this.duration, 1);
+    this.onProgress(progress);
+
+    if (progress < 1) {
+      this.frameId = requestAnimationFrame(() => this.onFrame());
+    }
+  }
+
+  private onProgress(progress: number): void {
+    this.node.style.opacity = progress.toString();
+  }
+
+  stop(): void {
+    if (this.frameId !== null) {
+      cancelAnimationFrame(this.frameId);
+    }
+
+    this.startTime = null;
+    this.frameId = null;
+    this.duration = 0;
+  }
+}
+//endregion
+
+
+
+
+
+
+
+
+
