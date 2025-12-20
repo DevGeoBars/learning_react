@@ -171,7 +171,7 @@ export const Box: FC = () => {
         width: 100,
         border: '2px solid black',
         backgroundColor: 'blue',
-        transition: 'width 0.3s ease'
+        transition: 'width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
       }}
     />
   );
