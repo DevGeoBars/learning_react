@@ -128,6 +128,55 @@ export const ModalDialog: FC<ModalDialogProps> = ({ isOpen, onClose, children })
   </dialog>;
 };
 
+//Tracking element visibility
+export const Box: FC = () => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    const div = ref.current;
+    const observer = new IntersectionObserver(entries => {
+      const entry = entries[0];
+      console.log(entry.isIntersecting); // true/false - виден ли элемент
+      console.log(entry.intersectionRatio); // 0.0 - 1.0 - какая часть видна
+      console.log(entry.boundingClientRect); // размеры и позиция элемента
+
+      if (entry.isIntersecting) {
+        document.body.style.backgroundColor = 'black';
+        document.body.style.color = 'white';
+        div.style.width = '200px';
+      } else {
+        document.body.style.backgroundColor = 'white';
+        document.body.style.color = 'black';
+        div.style.width = '20px';
+      }
+    }, {
+      threshold: 1.0
+    });
+
+    observer.observe(div);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        margin: 20,
+        height: 100,
+        width: 100,
+        border: '2px solid black',
+        backgroundColor: 'blue',
+        transition: 'width 0.3s ease'
+      }}
+    />
+  );
+};
+
 
 //#region helpers
 

@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 
-import { withLogger } from "@/HOC";
-import { LongSection } from "@/components";
+import {withLogger} from "@/HOC";
+import {LongSection} from "@/components";
 import {
   ButtonWithoutForwardRef,
   BadRef,
@@ -14,7 +14,7 @@ import {
   AvoidingRecreatingTheRefContents,
   ChatRoom,
   WebDevSimplified1,
-  WebDevSimplified2, CheckMousePosition, Welcome, ModalDialog
+  WebDevSimplified2, CheckMousePosition, Welcome, ModalDialog, Box
 } from "@/hooks";
 
 import "primereact/resources/themes/lara-light-cyan/theme.css";
@@ -22,12 +22,10 @@ import './App.css';
 import {Button} from "primereact/button";
 
 
-
-
 function App() {
   const [count, setCount] = useState<number>(0);
   const [text, setText] = useState<string>('');
-  const [objectValue, setObjectValue] = useState<{name: string}>({name: 'As'});
+  const [objectValue, setObjectValue] = useState<{ name: string }>({name: 'As'});
   const [roomId, setRoomId] = useState('general');
   const [show, setShow] = useState(false);
 
@@ -43,7 +41,8 @@ function App() {
       <input type={'number'} onChange={(e) => setCount(+e.target.value)} value={count}/>
       <button onClick={() => {
         console.log('demoRef', demoRef);
-      }}>log data</button>
+      }}>log data
+      </button>
 
       <label>
         Choose the chat room:{' '}
@@ -59,14 +58,24 @@ function App() {
       <button onClick={() => setShow(!show)}>
         {show ? 'Close chat' : 'Open chat'}
       </button>
-        <ModalDialog isOpen={show} onClose={() => console.log('closed')}>
-          Hello there!
-          <br />
-          <LongSection/>
-          <Button onClick={(e) => {setShow(false)}}>Close</Button>
-        </ModalDialog>
+
+      <LongSection/>
+      <Box/>
+      <LongSection/>
+      <Box/>
+      <LongSection/>
+
+      <ModalDialog isOpen={show} onClose={() => console.log('closed')}>
+        Hello there!
+        <br/>
+        <Button onClick={(e) => {
+          setShow(false)
+        }}>Close</Button>
+      </ModalDialog>
+
     </div>
   );
 }
+
 export const AppWithLogger = withLogger(App);
 
