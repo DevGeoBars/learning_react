@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 
 import { withLogger } from "@/HOC";
+import { LongSection } from "@/components";
 import {
   ButtonWithoutForwardRef,
   BadRef,
@@ -19,6 +20,7 @@ import {
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import './App.css';
 import {Button} from "primereact/button";
+
 
 
 
@@ -60,6 +62,7 @@ function App() {
         <ModalDialog isOpen={show} onClose={() => console.log('closed')}>
           Hello there!
           <br />
+          <LongSection/>
           <Button onClick={(e) => {setShow(false)}}>Close</Button>
         </ModalDialog>
     </div>
