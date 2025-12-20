@@ -119,6 +119,8 @@ export const ModalDialog: FC<ModalDialogProps> = ({ isOpen, onClose, children })
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
+      transition: 'opacity 0.3s ease',
+      opacity: isOpen ? 1 : 0,
     }}
     onClose={onClose}
   >
