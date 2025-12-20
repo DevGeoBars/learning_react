@@ -13,11 +13,12 @@ import {
   AvoidingRecreatingTheRefContents,
   ChatRoom,
   WebDevSimplified1,
-  WebDevSimplified2, CheckMousePosition, Welcome
+  WebDevSimplified2, CheckMousePosition, Welcome, ModalDialog
 } from "@/hooks";
 
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import './App.css';
+import {Button} from "primereact/button";
 
 
 
@@ -56,7 +57,11 @@ function App() {
       <button onClick={() => setShow(!show)}>
         {show ? 'Close chat' : 'Open chat'}
       </button>
-      <><Welcome show={show}/></>
+        <ModalDialog isOpen={show} onClose={() => console.log('closed')}>
+          Hello there!
+          <br />
+          <Button onClick={(e) => {setShow(false)}}>Close</Button>
+        </ModalDialog>
     </div>
   );
 }

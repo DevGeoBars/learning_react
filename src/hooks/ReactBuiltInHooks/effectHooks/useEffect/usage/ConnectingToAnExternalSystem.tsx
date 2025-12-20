@@ -1,4 +1,4 @@
-import {useEffect, useState, FC, useRef, } from "react";
+import {useEffect, useState, FC, useRef, ReactNode,} from "react";
 
 import {s} from "vitest/dist/reporters-w_64AS5f";
 
@@ -97,6 +97,36 @@ export const Welcome: FC<{show: boolean}> = ({show}) => {
   );
 };
 
+//Controlling a modal dialog
+export const ModalDialog: FC<ModalDialogProps> = ({ isOpen, onClose, children }) => {
+  const ref = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    if (isOpen) {
+      ref.current.showModal();
+    } else {
+      ref.current.close();
+      onClose();
+    }
+  }, [isOpen]);
+
+  return <dialog
+    ref={ref}
+    style={{
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+    }}
+    onClose={onClose}
+  >
+    {children}
+  </dialog>;
+};
+
+
 //#region helpers
 
 const createConnection = (roomId: string, serverUrl: string) => {
@@ -186,7 +216,13 @@ export class FadeInAnimation {
 //endregion
 
 
-
+//region types
+interface ModalDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: ReactNode;
+}
+//endregion
 
 
 
