@@ -146,10 +146,12 @@ export const Box: FC = () => {
         document.body.style.backgroundColor = 'black';
         document.body.style.color = 'white';
         div.style.width = '200px';
+        div.style.margin = '200px';
       } else {
         document.body.style.backgroundColor = 'white';
         document.body.style.color = 'black';
         div.style.width = '20px';
+        div.style.margin = '20px';
       }
     }, {
       threshold: 1.0
@@ -171,7 +173,7 @@ export const Box: FC = () => {
         width: 100,
         border: '2px solid black',
         backgroundColor: 'blue',
-        transition: 'width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
+        transition:  'width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), margin 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'
       }}
     />
   );
