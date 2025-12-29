@@ -1,16 +1,16 @@
 import React, {forwardRef, useEffect, useId, useImperativeHandle, useRef} from 'react';
 
-type TUseImperativeHandleProps = {ref: any};
+type TUseImperativeHandleProps = {refAsProps: any};
 
 interface ComponentHandle {
     focus: () => void;
     scrollIntoView: () => void;
 }
 
-export const UseImperativeHandle: React.FC<TUseImperativeHandleProps> = ({ ref }) => {
+export const UseImperativeHandle: React.FC<TUseImperativeHandleProps> = ({ refAsProps }) => {
     const [count, setCount] = React.useState(0);
 
-    useImperativeHandle(ref, () => ({
+    useImperativeHandle(refAsProps, () => ({
         focus: () => {
             console.log('focus called');
         },
@@ -28,15 +28,17 @@ export const UseImperativeHandle: React.FC<TUseImperativeHandleProps> = ({ ref }
 };
 
 
-type TProps = { name: string};
-type TRef = { componentID: string};
 
-export const ForwardRefWrapped = forwardRef<TRef,TProps>((props, ref) => {
-    const id = useId();
+
+
+export const UseImperativeHandleWithDeps = forwardRef<{count: number}, any>((props, ref) => {
+    const [count, setCount] = React.useState(0);
 
     useImperativeHandle(ref, () => {
-        return {componentID: id}
-    }, [id]);
+        return {count}
+    }, [count])
 
-    return <>ForwardRefExample</>
+    return <><input type={'number'} onChange={(e) => setCount(+e.target.value)} /> </>
 })
+
+export * from './useScrollMethodeOfChildrenComponent'
