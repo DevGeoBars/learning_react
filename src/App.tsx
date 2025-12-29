@@ -20,6 +20,7 @@ import {
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import './App.css';
 import {Button} from "primereact/button";
+import { Map } from "@/hooks/ReactBuiltInHooks/effectHooks/useEffect/usage/ControllingANonReactWidget";
 
 
 
@@ -31,57 +32,18 @@ function App() {
   const [trail, setTrail] = useState<Array<{x: number, y: number, id: number}>>([]);
   const [roomId, setRoomId] = useState('general');
   const [show, setShow] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(0);
 
-  // useEffectWithDepsChangeCheck((changes: any) => {
-  //   console.log(changes)
-  // }, {count, text, objectValue});
 
-  useWindowListener('pointermove', (e: any) => {
-    setPosition({ x: e.clientX, y: e.clientY });
-  });
-
-  useHideCursor()
   const demoRef = useRef<any>(null);
 
   return (
     <div className="App">
-      <input type={'number'} onChange={(e) => setCount(+e.target.value)} value={count}/>
-      <button onClick={() => {
-        console.log('demoRef', demoRef);
-      }}>log data
-      </button>
+      Zoom level: {zoomLevel}x
+      <button onClick={() => setZoomLevel(zoomLevel + 1)}>+</button>
 
-      <label>
-        Choose the chat room:{' '}
-        <select
-          value={roomId}
-          onChange={e => setRoomId(e.target.value)}
-        >
-          <option value="general">general</option>
-          <option value="travel">travel</option>
-          <option value="music">music</option>
-        </select>
-      </label>
-      <button onClick={() => setShow(!show)}>
-        {show ? 'Close chat' : 'Open chat'}
-      </button>
-
-
-
-      <div style={{
-        position: 'absolute',
-        backgroundColor: 'pink',
-        borderRadius: '50%',
-
-        transform: `translate(${position.x}px, ${position.y}px)`,
-        pointerEvents: 'none',
-        left: -5,
-        top: -5,
-        width: 10,
-        height: 10,
-      }} />
-
-
+      <button onClick={() => setZoomLevel(zoomLevel - 1)}>-</button>
+      <Map zoomLevel={zoomLevel}/>
     </div>
   );
 }

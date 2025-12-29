@@ -2,3 +2,7 @@ h1 {
   font-size: 2em; /* или нужное значение */
   margin: 0;
 }
+
+.leaflet-control {
+  display: none;
+}
