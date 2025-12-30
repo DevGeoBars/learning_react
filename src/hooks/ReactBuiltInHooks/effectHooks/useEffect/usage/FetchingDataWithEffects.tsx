@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, ChangeEvent } from 'react';
 
 //Fetching data with Effects
-export const Page: FC = () => {
+export const PageUseEffect: FC = () => {
   const [person, setPerson] = useState<string>('Alice');
   const [bio, setBio] = useState<string | null>(null);
 

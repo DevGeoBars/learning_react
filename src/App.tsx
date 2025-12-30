@@ -5,7 +5,7 @@ import {LongSection} from "@/components";
 import {
   ButtonWithoutForwardRef,
   BadRef,
-  Page,
+  PageUseEffect,
   SimpleUseRef,
   Stopwatch,
   useEffectWithDepsChangeCheck,
