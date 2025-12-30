@@ -6,15 +6,16 @@ export const Page: FC = () => {
   const [bio, setBio] = useState<string | null>(null);
 
   useEffect(() => {
-    let ignore = false;
-    setBio(null);
-
-    fetchBio(person).then(result => {
+    async function startFetching() {
+      setBio(null);
+      const result = await fetchBio(person);
       if (!ignore) {
         setBio(result);
       }
-    });
+    }
 
+    let ignore = false;
+    startFetching();
     return () => {
       ignore = true;
     };

@@ -39,11 +39,8 @@ function App() {
 
   return (
     <div className="App">
-      Zoom level: {zoomLevel}x
-      <button onClick={() => setZoomLevel(zoomLevel + 1)}>+</button>
 
-      <button onClick={() => setZoomLevel(zoomLevel - 1)}>-</button>
-      <Map zoomLevel={zoomLevel}/>
+      <Page />
     </div>
   );
 }
