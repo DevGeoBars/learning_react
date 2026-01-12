@@ -11,7 +11,7 @@ export const UpdatingStateBasedOnPreviousStateFromAnEffect: React.FC<TUpdatingSt
   //     setCount(count + 1); You want to increment the counter every second...
   //   }, 1000)
   //   return () => clearInterval(intervalId);
-  // }, [count]);  🚩 ... but specifying `count` as a dependency always resets the interval.
+  // }, [count]);  🚩 ... but specifying `count` as a dependency always resets the interval. - лишняя заивисимость
 
   useEffect(() => {
     const intervalId = setInterval(() => {
