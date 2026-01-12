@@ -14,7 +14,14 @@ import {
   AvoidingRecreatingTheRefContents,
   ChatRoom,
   WebDevSimplified1,
-  WebDevSimplified2, CheckMousePosition, Welcome, ModalDialog, Box, useWindowListener, useHideCursor
+  WebDevSimplified2,
+  CheckMousePosition,
+  Welcome,
+  ModalDialog,
+  Box,
+  useWindowListener,
+  useHideCursor,
+  UpdatingStateBasedOnPreviousStateFromAnEffect
 } from "@/hooks";
 
 import "primereact/resources/themes/lara-light-cyan/theme.css";
@@ -40,7 +47,7 @@ function App() {
   return (
     <div className="App">
 
-      <PageUseEffect />
+      <UpdatingStateBasedOnPreviousStateFromAnEffect />
     </div>
   );
 }
