@@ -15,7 +15,7 @@ export const UpdatingStateBasedOnPreviousStateFromAnEffect: React.FC<TUpdatingSt
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCount((c) => c + 1);
+      setCount((c) => c + 1); // - ✅ а тут все нормально используем функцию useState для того что бы избежать указания зависимотей в эффекте
     }, 1000);
 
     return () => clearInterval(intervalId);
