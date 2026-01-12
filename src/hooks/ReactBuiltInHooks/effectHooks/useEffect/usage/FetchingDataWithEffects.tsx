@@ -6,6 +6,8 @@ export const PageUseEffect: FC = () => {
   const [bio, setBio] = useState<string | null>(null);
 
   useEffect(() => {
+    let ignore = false;
+
     async function startFetching() {
       setBio(null);
       const result = await fetchBio(person);
@@ -14,7 +16,6 @@ export const PageUseEffect: FC = () => {
       }
     }
 
-    let ignore = false;
     startFetching();
     return () => {
       ignore = true;
