@@ -21,7 +21,7 @@ import {
   Box,
   useWindowListener,
   useHideCursor,
-  UpdatingStateBasedOnPreviousStateFromAnEffect
+  UpdatingStateBasedOnPreviousStateFromAnEffect, MeasuringLayoutBeforeBrowserRepaintsScreen
 } from "@/hooks";
 
 import "primereact/resources/themes/lara-light-cyan/theme.css";
@@ -47,7 +47,7 @@ function App() {
   return (
     <div className="App">
 
-      <UpdatingStateBasedOnPreviousStateFromAnEffect />
+      <MeasuringLayoutBeforeBrowserRepaintsScreen />
     </div>
   );
 }

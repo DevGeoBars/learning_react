@@ -1,6 +1,6 @@
 import { FC, useRef, useLayoutEffect, useState, ReactNode, RefObject } from 'react';
 import { createPortal } from 'react-dom';
-
+//https://react.dev/reference/react/useLayoutEffect#measuring-layout-before-the-browser-repaints-the-screen
 type MeasuringLayoutBeforeBrowserRepaintsScreenProps = {};
 
 export const MeasuringLayoutBeforeBrowserRepaintsScreen: FC<MeasuringLayoutBeforeBrowserRepaintsScreenProps> = ({}) => {
@@ -17,22 +17,7 @@ export const MeasuringLayoutBeforeBrowserRepaintsScreen: FC<MeasuringLayoutBefor
       >
         Hover over me (tooltip above)
       </ButtonWithTooltip>
-      <div style={{ height: 50 }} />
-      <ButtonWithTooltip
-        tooltipContent={
-          <div>This tooltip fits above the button</div>
-        }
-      >
-        Hover over me (tooltip below)
-      </ButtonWithTooltip>
-      <div style={{ height: 50 }} />
-      <ButtonWithTooltip
-        tooltipContent={
-          <div>This tooltip fits above the button</div>
-        }
-      >
-        Hover over me (tooltip below)
-      </ButtonWithTooltip>
+
     </div>
   );
 };
