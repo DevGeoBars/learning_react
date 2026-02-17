@@ -20,3 +20,4 @@ export const UseLayoutEffectExample: FC<TUseLayoutEffectExampleProps>  = ({}) =>
   </>
 };
 
+export * from './usage'

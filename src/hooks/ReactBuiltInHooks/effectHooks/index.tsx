@@ -1,5 +1,5 @@
-export * from './useEffect/usage'
-export * from './useEffect/webDevSimplified'
+export * from './useEffect'
+export * from './useLayoutEffect'
 
 import React from 'react';
 
