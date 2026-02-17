@@ -102,13 +102,12 @@ export const Tooltip: FC<TooltipProps> = ({ children, targetRect }) => {
 interface ButtonWithTooltipProps {
   tooltipContent: ReactNode;
   children: ReactNode;
-  [key: string]: any; // для остальных пропсов кнопки
+
 }
 
 export const ButtonWithTooltip: FC<ButtonWithTooltipProps> = ({
                                                                 tooltipContent,
                                                                 children,
-                                                                ...rest
                                                               }) => {
   const [targetRect, setTargetRect] = useState<{
     left: number;
@@ -122,16 +121,23 @@ export const ButtonWithTooltip: FC<ButtonWithTooltipProps> = ({
   return (
     <>
       <button
-        {...rest}
         ref={buttonRef}
-        onPointerEnter={() => {
-          const rect = buttonRef.current!.getBoundingClientRect();
+        onPointerEnter={() => { // кросплатформенный onMouseInter
+          const rect = buttonRef.current!.getBoundingClientRect(); //getBoundingClientRect() возвращает не расстояния до краев, всегда возвращает координаты от левого верхнего угла.
+
           setTargetRect({
-            left: rect.left,
-            top: rect.top,
-            right: rect.right,
-            bottom: rect.bottom,
+            left: rect.left, // координата X левой границы элемента от левой границы viewport
+            top: rect.top, // координата Y верхней границы элемента от верхней границы viewport
+            right: rect.right, // координата X правой границыот левой элемента
+            bottom: rect.bottom, // координата Y нижней границы элемента верхней границы viewport
           });
+
+          const fromViewPortRightToElement = window.innerWidth - rect.right;
+          const fromViewPortBottomToElement = window.innerHeight - rect.bottom;
+
+          console.log(rect);
+          console.log(fromViewPortRightToElement)
+          console.log(fromViewPortBottomToElement)
         }}
         onPointerLeave={() => {
           setTargetRect(null);
