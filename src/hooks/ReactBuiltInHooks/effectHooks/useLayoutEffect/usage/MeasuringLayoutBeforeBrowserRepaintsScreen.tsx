@@ -17,6 +17,18 @@ export const MeasuringLayoutBeforeBrowserRepaintsScreen: FC<MeasuringLayoutBefor
       >
         Hover over me (tooltip above)
       </ButtonWithTooltip>
+      <div style={{ height: 50 }} />
+      <ButtonWithTooltip
+        tooltipContent={
+          <div>
+            This tooltip does not fit above the button.
+            <br />
+            This is why it's displayed below instead!
+          </div>
+        }
+      >
+        Hover over me (tooltip above)
+      </ButtonWithTooltip>
 
     </div>
   );
@@ -62,7 +74,7 @@ interface TooltipProps {
     top: number;
     right: number;
     bottom: number;
-  } | null;
+  };
 }
 
 export const Tooltip: FC<TooltipProps> = ({ children, targetRect }) => {
@@ -71,22 +83,17 @@ export const Tooltip: FC<TooltipProps> = ({ children, targetRect }) => {
 
   useLayoutEffect(() => {
     if (ref.current) {
-      const { height } = ref.current.getBoundingClientRect();
-      setTooltipHeight(height);
-      console.log('Measured tooltip height: ' + height);
+      const rect = ref.current.getBoundingClientRect();
+      setTooltipHeight(rect.height);
+      console.log('Measured tooltip height: ' + rect.height);
     }
   }, []);
 
-  let tooltipX = 0;
-  let tooltipY = 0;
+  let tooltipX = targetRect.left;
+  let tooltipY = targetRect.top - tooltipHeight;
 
-  if (targetRect !== null) {
-    tooltipX = targetRect.left;
-    tooltipY = targetRect.top - tooltipHeight;
-
-    if (tooltipY < 0) {
-      tooltipY = targetRect.bottom;
-    }
+  if (tooltipY < 0) {
+    tooltipY = targetRect.bottom;
   }
 
   return createPortal(
@@ -127,8 +134,8 @@ export const ButtonWithTooltip: FC<ButtonWithTooltipProps> = ({
 
           setTargetRect({
             left: rect.left, // координата X левой границы элемента от левой границы viewport
-            top: rect.top, // координата Y верхней границы элемента от верхней границы viewport
             right: rect.right, // координата X правой границыот левой элемента
+            top: rect.top, // координата Y верхней границы элемента от верхней границы viewport
             bottom: rect.bottom, // координата Y нижней границы элемента верхней границы viewport
           });
 
