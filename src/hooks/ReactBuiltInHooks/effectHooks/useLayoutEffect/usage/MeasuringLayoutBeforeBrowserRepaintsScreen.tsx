@@ -1,4 +1,4 @@
-import { FC, useRef, useLayoutEffect, useState, ReactNode, RefObject } from 'react';
+import {FC, useRef, useLayoutEffect, useState, ReactNode, RefObject, useEffect} from 'react';
 import { createPortal } from 'react-dom';
 //https://react.dev/reference/react/useLayoutEffect#measuring-layout-before-the-browser-repaints-the-screen
 type MeasuringLayoutBeforeBrowserRepaintsScreenProps = {};
@@ -55,7 +55,6 @@ export const ButtonWithTooltip: FC<ButtonWithTooltipProps> = ({ tooltipContent, 
             width: rect.width, // ширина
             height: rect.height// высота
           });
-          debugger
         }}
         onPointerLeave={() => {
           setButtonRect(null);
@@ -81,12 +80,34 @@ export const TooltipPortal: FC<TooltipPortalProps> = ({ children, buttonRect }) 
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [tooltipContentRect, setTooltipContentRect] = useState<Rectangle | null>(null);
 
+  // 🎯 useLayoutEffect - Синхронное измерение ДО отрисовки
+// Блокирует рендеринг браузера, гарантируя точные измерения
+// Идеально для: анимаций, позиционирования, измерений влияющих на верстку
   useLayoutEffect(() => {
     if (tooltipRef.current) {
       const rect = tooltipRef.current.getBoundingClientRect();
       setTooltipContentRect(rect);
+      // ⚡️ Значения будут применены ДО того, как пользователь увидит экран
+      // Никакого "мерцания" или перескоков контента
     }
-  }, []);
+  }, []); // Выполняется синхронно после мутаций DOM
+
+// 🌈 useEffect - Асинхронное измерение ПОСЛЕ отрисовки
+// Не блокирует рендеринг, может вызвать "моргание" контента
+// Идеально для: невизуальных операций, загрузки данных, логов
+// useEffect(() => {
+//   if (tooltipRef.current) {
+//     const rect = tooltipRef.current.getBoundingClientRect();
+//     setTooltipContentRect(rect);
+//     // 👁️ Сначала пользователь увидит начальное состояние
+//     // Затем произойдет ререндер с новыми значениями
+//     // Возможно визуальное "дерганье" интерфейса
+//   }
+// }, []); // Выполняется асинхронно после отрисовки
+
+// 💡 КЛЮЧЕВОЕ ОТЛИЧИЕ:
+// useLayoutEffect: Измеряем → Блокируем рендер → Применяем изменения → Показываем пользователю
+// useEffect: Показываем пользователю → Измеряем → Применяем изменения → Показываем обновленное
 
   let tooltipX = buttonRect.left;
   let tooltipY = buttonRect.top - (tooltipContentRect?.height ?? 0);
