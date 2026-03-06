@@ -55,6 +55,7 @@ export const ButtonWithTooltip: FC<ButtonWithTooltipProps> = ({ tooltipContent, 
             width: rect.width, // ширина
             height: rect.height// высота
           });
+          debugger
         }}
         onPointerLeave={() => {
           setButtonRect(null);
@@ -87,12 +88,8 @@ export const TooltipPortal: FC<TooltipPortalProps> = ({ children, buttonRect }) 
     }
   }, []);
 
-  if (tooltipContentRect === null) {
-    return null;
-  }
-
   let tooltipX = buttonRect.left;
-  let tooltipY = buttonRect.top - tooltipContentRect.height;
+  let tooltipY = buttonRect.top - (tooltipContentRect?.height ?? 0);
 
   if (tooltipY < 0) {
     tooltipY = buttonRect.bottom;
